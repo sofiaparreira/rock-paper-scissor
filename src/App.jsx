@@ -8,6 +8,8 @@ function App() {
   const [winner, setWinner] = useState('');
   const [machineMove, setMachineMove] = useState('');
   const [resultMessage, setResultMessage] = useState('');
+  const [pontosJogador, setPontosJogador] = useState(0)
+  const [pontosMaquina, setPontosMaquina] = useState(0)
   const [possibleMoves] = useState([
     {
       type: 'paper',
@@ -52,11 +54,14 @@ function App() {
     if (isPlayerTheWinner) {
       setWinner('Jogador');
       setResultMessage('Você ganhou');
+      setPontosJogador(pontosJogador + 1)
     } else {
       setWinner('Computador');
+      setPontosMaquina(pontosMaquina + 1)
       setResultMessage('Você perdeu');
     }
   };
+
 
   const getMachineMoveImage = () => {
     const move = possibleMoves.find(move => move.type === machineMove);
@@ -67,32 +72,37 @@ function App() {
     <div className='w-screen h-screen bg-slate-800 mx-0 text-white pt-16'>
       <div className='border border-gray-100 rounded-lg py-2 px-4 mx-64 flex justify-between items-center'>
         <h1 className='text-3xl w-1/3'>ROCK, PAPER OR SCISSOR</h1>
-        <div className='rounded-md bg-gray-100 text-black px-6 flex flex-col justify-center text-center py-4'>
-          <span className='text-gray-600'>Placar</span>
-          <span className='text-4xl font-medium'>2</span>
+        <div className='flex gap-8'>
+          <div className='rounded-md bg-gray-100 text-black px-6 flex flex-col justify-center text-center py-4'>
+            <span className='text-gray-600'>Máquina</span>
+            <span className='text-4xl font-medium'>{pontosMaquina}</span>
+          </div>
+          <div className='rounded-md bg-gray-100 text-black px-6 flex flex-col justify-center text-center py-4'>
+            <span className='text-gray-600'>Jogador</span>
+            <span className='text-4xl font-medium'>{pontosJogador}</span>
+          </div>
         </div>
       </div>
 
-      <div className='flex justify-center mt-8'>
-        <button className='mx-4' onClick={() => makeMove('paper')}>
-          <img src={paperHandImage} alt="Paper" />
-        </button>
-
-        <button className='mx-4' onClick={() => makeMove('rock')}>
-          <img src={rockHandImage} alt="Rock" />
-        </button>
-
-        <button className='mx-4' onClick={() => makeMove('scissor')}>
-          <img src={scissorHandImage} alt="Scissor" />
-        </button>
-      </div>
-
-      {machineMove && (
-        <div className='text-center mt-8'>
-          <h2 className='text-2xl'>A máquina escolheu:</h2>
-          <img src={getMachineMoveImage()} alt={machineMove} className='mx-auto' />
+      <div className='flex justify-between mx-64'>
+        <div className='flex justify-center mt-8'>
+          <button className='mx-4' onClick={() => makeMove('paper')}>
+            <img src={paperHandImage} alt="Paper" />
+          </button>
+          <button className='mx-4' onClick={() => makeMove('rock')}>
+            <img src={rockHandImage} alt="Rock" />
+          </button>
+          <button className='mx-4' onClick={() => makeMove('scissor')}>
+            <img src={scissorHandImage} alt="Scissor" />
+          </button>
         </div>
-      )}
+        {machineMove && (
+          <div className='text-center mt-8'>
+            <h2 className='text-2xl'>A máquina escolheu:</h2>
+            <img src={getMachineMoveImage()} alt={machineMove} className='mx-auto' />
+          </div>
+        )}
+      </div>
 
       {resultMessage && (
         <div className='text-center mt-8'>
